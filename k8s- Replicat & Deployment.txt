@@ -1,0 +1,70 @@
+----------------##--ReplicaSet-------------
+A ReplicaSet's purpose is to maintain a stable set of replica Pods running at any given time. 
+Usually,you define a Deployment and let that Deployment manage ReplicaSets automatically.
+
+#vim rs.yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: shubham
+  labels:
+    app: shub.com
+    tier: fan
+spec:
+  # modify replicas according to your case
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: fan
+  template:
+    metadata:
+      labels:
+        tier: fan
+    spec:
+      containers:
+       - name: nginx
+         image: nginx
+:x
+
+#kubectl apply -f rs.yaml
+#kubectl get pod
+
+--------Deployments----
+A Deployment manages a set of Pods to run an application workload, usually one that doesn't maintain state.
+----Use Case------
+-Create a Deployment to rollout a ReplicaSet
+-Declare the new state of the Pods
+-Use the status of the Deployment as an indicator that a rollout has stuck.
+-Scale up the Deployment to facilitate more load.
+
+#vim deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shubham
+  labels:
+    app: shub.com
+    tier: light
+spec:
+  ## modify replicas according to your case
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: light
+  template:
+    metadata:
+      labels:
+        tier: light
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+:x
+#kubectl apply -f deploy.yaml
+#kubectl get deploy
+#kubectl get po
+
+##delete pod command--------
+#kubectl delete po (pod name) 
+##----but new pod spin up-------##
+
